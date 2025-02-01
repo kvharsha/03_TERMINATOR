@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.lisa">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-feature android:name="android.hardware.microphone" android:required="true" />
+
+    <!-- Features -->
+    <uses-feature android:name="android.hardware.camera.ar" android:required="true" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LISA"
         tools:targetApi="31">
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,10 +33,20 @@
             android:theme="@style/Theme.LISA">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Other Activities -->
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".DashboardActivity" />
+        <activity android:name=".StressActivity" />
+        <activity android:name=".FunnyARActivity" />
+        <activity android:name=".ScenicARActivity" />
+        <activity android:name=".MeditationActivity" />
+        <activity android:name=".FocusActivity" />
+
     </application>
+
 
 </manifest>
