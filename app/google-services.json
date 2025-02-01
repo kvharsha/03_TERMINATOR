@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1076353833358",
+    "project_id": "lisa-f9190",
+    "storage_bucket": "lisa-f9190.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076353833358:android:1f8fc6c0d50e2baa69acdf",
+        "android_client_info": {
+          "package_name": "com.example.lisa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoZkc04TFo3q1q2czhWjVLx6sybyuRpkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
