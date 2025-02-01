@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         // Initialize Firebase Authentication instance
         auth = FirebaseAuth.getInstance()
 
-        // Set content with ARScreen using setContent
+        // Set content with ARScreen using Jetpack Compose
         setContent {
             ARScreen()
         }
@@ -40,11 +39,23 @@ class MainActivity : AppCompatActivity() {
 
         // Set click listeners for login and signup buttons
         loginButton.setOnClickListener {
-            loginUser(email.text.toString(), password.text.toString())
+            val emailText = email.text.toString().trim()
+            val passwordText = password.text.toString().trim()
+            if (emailText.isNotEmpty() && passwordText.isNotEmpty()) {
+                loginUser(emailText, passwordText)
+            } else {
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+            }
         }
 
         signupButton.setOnClickListener {
-            registerUser(email.text.toString(), password.text.toString())
+            val emailText = email.text.toString().trim()
+            val passwordText = password.text.toString().trim()
+            if (emailText.isNotEmpty() && passwordText.isNotEmpty()) {
+                registerUser(emailText, passwordText)
+            } else {
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -52,11 +63,10 @@ class MainActivity : AppCompatActivity() {
     private fun registerUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Registration successful, navigate to DashboardActivity
                 Toast.makeText(this, "User Registered!", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, DashboardActivity::class.java))
+                finish()
             } else {
-                // Registration failed, show error message
                 Toast.makeText(this, "Signup Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -66,11 +76,10 @@ class MainActivity : AppCompatActivity() {
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Login successful, navigate to DashboardActivity
                 Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, DashboardActivity::class.java))
+                finish()
             } else {
-                // Login failed, show error message
                 Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
             }
         }
