@@ -79,5 +79,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("com.google.ar:core:1.41.0")        // ARCore
     implementation ("com.google.mlkit:object-detection:17.0.0")  // ML Kit Object Detection
-    implementation ("com.google.accompanist:accompanist-animations:0.24.13-rc")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 }

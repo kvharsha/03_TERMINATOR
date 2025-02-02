@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import androidx.compose.ui.graphics.graphicsLayer
 
-
 class MeditationActivity : ComponentActivity() {
 
     private var mediaPlayer: MediaPlayer? = null
@@ -63,6 +62,11 @@ class MeditationActivity : ComponentActivity() {
                 onPause = {
                     mediaPlayer?.pause()
                     audioManager?.abandonAudioFocusRequest(focusRequest)
+                },
+                onReset = {
+                    mediaPlayer?.pause()
+                    mediaPlayer?.seekTo(0)
+                    audioManager?.abandonAudioFocusRequest(focusRequest)
                 }
             )
         }
@@ -76,7 +80,7 @@ class MeditationActivity : ComponentActivity() {
 }
 
 @Composable
-fun MeditationScreen(onPlay: () -> Unit, onPause: () -> Unit) {
+fun MeditationScreen(onPlay: () -> Unit, onPause: () -> Unit, onReset: () -> Unit) {
     var isPlaying by remember { mutableStateOf(false) }
     var timeLeft by remember { mutableStateOf(300) } // 5 minutes in seconds
 
@@ -100,7 +104,8 @@ fun MeditationScreen(onPlay: () -> Unit, onPause: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor),
+            .background(backgroundColor)
+            .padding(padding),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -111,11 +116,10 @@ fun MeditationScreen(onPlay: () -> Unit, onPause: () -> Unit) {
                 modifier = Modifier
                     .padding(16.dp)
                     .graphicsLayer(
-                        scaleX = if (isPlaying) 1.2f else 1f,
-                        scaleY = if (isPlaying) 1.2f else 1f
+                        scaleX = scale,
+                        scaleY = scale
                     )
             )
-
 
             Text(
                 text = String.format("%02d:%02d", timeLeft / 60, timeLeft % 60),
@@ -124,22 +128,38 @@ fun MeditationScreen(onPlay: () -> Unit, onPause: () -> Unit) {
                 modifier = Modifier.padding(16.dp)
             )
 
-            Button(
-                onClick = {
-                    if (isPlaying) {
-                        onPause()
-                    } else {
-                        onPlay()
-                    }
-                    isPlaying = !isPlaying
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00796B)),
-                modifier = Modifier.graphicsLayer(
-                    scaleX = if (isPlaying) 1.1f else 1f,
-                    scaleY = if (isPlaying) 1.1f else 1f
-                )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = if (isPlaying) "Pause" else "Start Meditation")
+                Button(
+                    onClick = {
+                        if (isPlaying) {
+                            onPause()
+                        } else {
+                            onPlay()
+                        }
+                        isPlaying = !isPlaying
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00796B)),
+                    modifier = Modifier.graphicsLayer(
+                        scaleX = if (isPlaying) 1.1f else 1f,
+                        scaleY = if (isPlaying) 1.1f else 1f
+                    )
+                ) {
+                    Text(text = if (isPlaying) "Pause" else "Start Meditation")
+                }
+
+                Button(
+                    onClick = {
+                        onReset()
+                        timeLeft = 300
+                        isPlaying = false
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00796B))
+                ) {
+                    Text(text = "Reset")
+                }
             }
         }
     }
